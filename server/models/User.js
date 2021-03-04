@@ -8,9 +8,9 @@ const userSchema = mongoose.Schema({
         type: String,
         maxlength: 50
     },
-    email: {
+    ID: {
         type: String,
-        trim: true,
+        //trim: true,
         unique: 1
     },
     password: {

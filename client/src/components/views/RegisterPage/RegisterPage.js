@@ -3,12 +3,13 @@ import { useDispatch } from 'react-redux';
 import { registerUser } from '../../../_actions/user_action';
 import Axios from 'axios';
 import { withRouter } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 function RegisterPage(props) {
     const dispatch = useDispatch();
 
-    const [ID, setID] = useState("")
     const [Name, setName] = useState("")
+    const [ID, setID] = useState("")
     const [Password, setPassword] = useState("")
     const [ConfirmPassword, setConfirmPassword] = useState("")
 
@@ -60,18 +61,14 @@ function RegisterPage(props) {
             <form style={{ display: 'flex', flexDirection: 'column' }}
                 onSubmit={onSubmitHandler}
             >
+                <label>닉네임</label>
+                <input type="text" value={Name} onChange={onNameHandler} />                
                 <label>ID</label>
                 <input type="ID" value={ID} onChange={onIDHandler} />
-
-                <label>Name</label>
-                <input type="text" value={Name} onChange={onNameHandler} />
-
                 <label>Password</label>
                 <input type="password" value={Password} onChange={onPasswordHandler} />
-
                 <label>Confirm Password</label>
                 <input type="password" value={ConfirmPassword} onChange={onConfirmPasswordHandler} />
-
                 <br />
                 <button type="submit">
                     회원 가입
