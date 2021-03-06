@@ -71,8 +71,8 @@ app.get("/api/users/auth", auth, (req, res) => {
   res.status(200).json({
     _id: req.user._id,
     isAuth: true,
-    nickName: req.user.nickName,
-    id: req.user.id,
+    name: req.user.name,
+    ID: req.user.ID,
     image: req.user.image,
   });
 });

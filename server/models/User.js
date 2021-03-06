@@ -4,7 +4,7 @@ const saltRounds = 10;
 const jwt = require("jsonwebtoken");
 
 const userSchema = mongoose.Schema({
-  nickName: {
+  name: {
     type: String,
     trim: true,
     minlength: 2,
@@ -12,7 +12,7 @@ const userSchema = mongoose.Schema({
     required: true, // 필수값
     unique: true, // 고유한 값이어야 함
   },
-  id: {
+  ID: {
     type: String,
     trim: true, // 공백 없애줌
     minlength: 5,
