@@ -15,8 +15,8 @@ router.post("/register", (req, res) => {
 // 로그인 route
 router.post("/login", (req, res) => {
   // 요청된 id가 database에 있는지 찾기
-  User.findOne({ id: req.body.id }, (err, user) => {
-    // user collection 안에 이메일 가진 유저 없다면
+  User.findOne({ ID: req.body.ID }, (err, user) => {
+    // user collection 안에 ID 가진 유저 없다면
     if (!user) {
       return res.json({
         loginSuccess: false,
