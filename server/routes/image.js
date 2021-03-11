@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
+const fs = require("fs");
 const { User } = require("../models/User");
 const { auth } = require("../middleware/auth");
 
@@ -34,6 +35,7 @@ router.post("/uploadfiles", auth, (req, res) => {
       { _id: req.user._id },
       { image: res.req.file.path },
       (err, user) => {
+        fs.unlink(`${user.image}`, (err) => {});
         if (err) return res.json({ success: false, err });
         return res.status(200).send({
           success: true,

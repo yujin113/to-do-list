@@ -16,6 +16,7 @@ const listSchema = mongoose.Schema({
         toDo: String,
         date: { type: String, required: true },
         private: { type: Boolean, default: true },
+        done: { type: Boolean, default: false },
       },
       { _id: false }
     ),

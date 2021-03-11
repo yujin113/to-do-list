@@ -26,6 +26,13 @@ const userSchema = mongoose.Schema({
     minlength: 5,
   },
   image: String,
+  goal: [
+    new mongoose.Schema({
+      year: Number,
+      month: Number,
+      goalContent: String,
+    }),
+  ],
   token: {
     // 유효성 관리
     type: String,
