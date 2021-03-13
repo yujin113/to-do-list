@@ -24,7 +24,7 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage: storage }).single("img");
+const upload = multer({ storage: storage }).single("profile");
 
 // 이미지 파일 업로드 후 User database의 image 속성에 저장
 router.post("/uploadfiles", auth, (req, res) => {

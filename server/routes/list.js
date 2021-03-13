@@ -6,6 +6,10 @@ const { List } = require("../models/List");
 // client에서 post 요청할 때 writer 정보(User)를 함께 보내줘야 함
 router.post("/saveList", (req, res) => {
   const list = new List(req.body);
+  List.deleteOne(
+    { writer: req.body.writer, category: req.body.category },
+    (err, res) => {}
+  );
   List.findOneAndUpdate(
     { writer: req.body.writer, category: req.body.category },
     { $push: { todos: req.body.todos } },
