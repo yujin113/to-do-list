@@ -30,22 +30,49 @@ router.get("/getList", (req, res) => {
     content: { $elemMatch: { date: req.body.date } },
   }).exec((err, list) => {
     if (err) return res.status(400).send(err);
-    List.aggregate(
-      [
-        { $match: { category: req.body.category } },
-        { $project: { totalCount: { $size: "$content" } } },
-      ],
-      (err, size) => {
-        res.status(200).json({
-          success: true,
-          list,
-          listCount: size[0].totalCount,
-          //count: list[0].content.length,
-        });
-      }
-    );
-    // listCount는 writer, category, date로 찾은 리스트의 개수
+    res.status(200).json({
+      success: true,
+      list,
+      count: list.content.length,
+    });
+    // listCount는 writer, category, date로 찾은 content 안의 배열 개수
   });
+});
+
+// 오늘의 달성률
+router.get("/getSuccess", (req, res) => {
+  let total = 0;
+  let done = 0;
+  List.find(
+    {
+      writer: req.body.writer,
+      // content: { $elemMatch: { done: true } },
+    },
+    (err, list) => {
+      for (i = 0; i < list.length; i++) {
+        total += list[i].content.length;
+      }
+      List.find(
+        {
+          writer: req.body.writer,
+          content: { $elemMatch: { done: true } },
+        },
+        (err, list) => {
+          if (err) res.status(400).send(err);
+          for (i = 0; i < list.length; i++) {
+            for (j = 0; j < list[i].content.length; j++) {
+              if (list[i].content[j].done === true) done += 1;
+            }
+          }
+          res.status(200).json({
+            success: true,
+            total,
+            done,
+          });
+        }
+      );
+    }
+  );
 });
 
 module.exports = router;
