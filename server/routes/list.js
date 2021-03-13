@@ -8,7 +8,7 @@ router.post("/saveList", (req, res) => {
   const list = new List(req.body);
   List.findOneAndUpdate(
     { writer: req.body.writer, category: req.body.category },
-    { $push: { content: req.body.content } },
+    { $push: { todos: req.body.todos } },
     (err, info) => {
       if (!info) {
         list.save((err, listInfo) => {
@@ -27,15 +27,22 @@ router.get("/getList", (req, res) => {
   List.findOne({
     writer: req.body.writer,
     category: req.body.category,
-    content: { $elemMatch: { date: req.body.date } },
+    todos: {
+      $elemMatch: {
+        year: req.body.year,
+        month: req.body.month,
+        today: req.body.today,
+      },
+    },
   }).exec((err, list) => {
     if (err) return res.status(400).send(err);
+
     res.status(200).json({
       success: true,
       list,
-      count: list.content.length,
+      count: list.todos.length,
     });
-    // listCount는 writer, category, date로 찾은 content 안의 배열 개수
+    // listCount는 writer, category, date로 찾은 todos 안의 배열 개수
   });
 });
 
@@ -46,22 +53,21 @@ router.get("/getSuccess", (req, res) => {
   List.find(
     {
       writer: req.body.writer,
-      // content: { $elemMatch: { done: true } },
     },
     (err, list) => {
       for (i = 0; i < list.length; i++) {
-        total += list[i].content.length;
+        total += list[i].todos.length;
       }
       List.find(
         {
           writer: req.body.writer,
-          content: { $elemMatch: { done: true } },
+          todos: { $elemMatch: { checked: true } },
         },
         (err, list) => {
           if (err) res.status(400).send(err);
           for (i = 0; i < list.length; i++) {
-            for (j = 0; j < list[i].content.length; j++) {
-              if (list[i].content[j].done === true) done += 1;
+            for (j = 0; j < list[i].todos.length; j++) {
+              if (list[i].todos[j].checked === true) done += 1;
             }
           }
           res.status(200).json({

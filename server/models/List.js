@@ -10,13 +10,15 @@ const listSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  content: [
+  todos: [
     new mongoose.Schema(
       {
-        toDo: String,
-        date: { type: String, required: true },
+        text: String,
+        year: { type: Number, required: true },
+        month: { type: Number, required: true },
+        today: { type: Number, required: true },
         private: { type: Boolean, default: true },
-        done: { type: Boolean, default: false },
+        checked: { type: Boolean, default: false },
       },
       { _id: false }
     ),
