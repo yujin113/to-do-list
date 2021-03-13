@@ -13,6 +13,7 @@ const listSchema = mongoose.Schema({
   todos: [
     new mongoose.Schema(
       {
+        id: Number,
         text: String,
         year: { type: Number, required: true },
         month: { type: Number, required: true },
