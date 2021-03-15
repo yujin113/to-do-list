@@ -51,38 +51,70 @@ router.get("/getList", (req, res) => {
 });
 
 // 오늘의 달성률
-router.get("/getSuccess", (req, res) => {
+router.get("/getTodaySuccess", (req, res) => {
   let total = 0;
   let done = 0;
-  List.find(
-    {
-      writer: req.body.writer,
+  List.find({
+    writer: req.body.writer,
+    todos: {
+      $elemMatch: {
+        year: req.body.year,
+        month: req.body.month,
+        today: req.body.today,
+      },
     },
-    (err, list) => {
+  })
+    .exec()
+    .then((list) => {
       for (i = 0; i < list.length; i++) {
         total += list[i].todos.length;
-      }
-      List.find(
-        {
-          writer: req.body.writer,
-          todos: { $elemMatch: { checked: true } },
-        },
-        (err, list) => {
-          if (err) res.status(400).send(err);
-          for (i = 0; i < list.length; i++) {
-            for (j = 0; j < list[i].todos.length; j++) {
-              if (list[i].todos[j].checked === true) done += 1;
-            }
-          }
-          res.status(200).json({
-            success: true,
-            total,
-            done,
-          });
+        for (j = 0; j < list[i].todos.length; j++) {
+          if (list[i].todos[j].checked === true) done += 1;
         }
-      );
-    }
-  );
+      }
+      res.status(200).json({
+        success: true,
+        total,
+        done,
+        //list,
+      });
+    })
+    .catch((err) => {
+      res.status(400).send(err);
+    });
+});
+
+// 이 달의 달성률
+router.get("/getMonthSuccess", (req, res) => {
+  let total = 0;
+  let done = 0;
+  List.find({
+    writer: req.body.writer,
+    todos: {
+      $elemMatch: {
+        year: req.body.year,
+        month: req.body.month,
+      },
+    },
+  })
+    .exec()
+    .then((list) => {
+      for (i = 0; i < list.length; i++) {
+        total += list[i].todos.length;
+        for (j = 0; j < list[i].todos.length; j++) {
+          if (list[i].todos[j].checked === true) done += 1;
+        }
+      }
+      res.status(200).json({
+        success: true,
+        total,
+        done,
+        //list,
+      });
+    })
+    .catch((err) => {
+      res.status(400).send(err);
+    });
 });
 
 module.exports = router;
