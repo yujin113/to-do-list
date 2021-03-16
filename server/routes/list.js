@@ -1,4 +1,5 @@
 const express = require("express");
+const { list } = require("tar");
 const router = express.Router();
 const { List } = require("../models/List");
 
@@ -28,23 +29,31 @@ router.post("/saveList", (req, res) => {
 // list를 database에서 불러와 client에게 전달
 router.get("/getList", (req, res) => {
   // client에서 writer, category, date 정보 전달해줘야 함
-  List.findOne({
-    writer: req.body.writer,
-    category: req.body.category,
-    todos: {
-      $elemMatch: {
-        year: req.body.year,
-        month: req.body.month,
-        today: req.body.today,
-      },
-    },
-  }).exec((err, list) => {
+  List.findOne(
+    {
+      writer: req.body.writer,
+      category: req.body.category,
+      "todos.year": req.body.year,
+      "todos.month": req.body.month,
+      "todos.today": req.body.today,
+    }
+    //{ "todos.$": 1 }
+  ).exec((err, list) => {
     if (err) return res.status(400).send(err);
-
+    if (!list) return res.json({ list });
+    for (i = list.todos.length - 1; i >= 0; i--) {
+      if (
+        list.todos[i].year !== req.body.year ||
+        list.todos[i].month !== req.body.month ||
+        list.todos[i].today !== req.body.today
+      ) {
+        list.todos.splice(i, 1);
+      }
+    }
     res.status(200).json({
       success: true,
+      listCount: list.todos.length,
       list,
-      count: list.todos.length,
     });
     // listCount는 writer, category, date로 찾은 todos 안의 배열 개수
   });
