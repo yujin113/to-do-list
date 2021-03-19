@@ -50,7 +50,7 @@ router.get("/getList", (req, res) => {
         list.todos.splice(i, 1);
       }
     }
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       listCount: list.todos.length,
       list,
@@ -59,44 +59,12 @@ router.get("/getList", (req, res) => {
   });
 });
 
-// 오늘의 달성률
-router.get("/getTodaySuccess", (req, res) => {
-  let total = 0;
-  let done = 0;
-  List.find({
-    writer: req.body.writer,
-    todos: {
-      $elemMatch: {
-        year: req.body.year,
-        month: req.body.month,
-        today: req.body.today,
-      },
-    },
-  })
-    .exec()
-    .then((list) => {
-      for (i = 0; i < list.length; i++) {
-        total += list[i].todos.length;
-        for (j = 0; j < list[i].todos.length; j++) {
-          if (list[i].todos[j].checked === true) done += 1;
-        }
-      }
-      res.status(200).json({
-        success: true,
-        total,
-        done,
-        //list,
-      });
-    })
-    .catch((err) => {
-      res.status(400).send(err);
-    });
-});
-
-// 이 달의 달성률
-router.get("/getMonthSuccess", (req, res) => {
-  let total = 0;
-  let done = 0;
+// 달성률 route
+router.get("/getSuccess", (req, res) => {
+  let todayTotal = 0;
+  let todayDone = 0;
+  let monthTotal = 0;
+  let monthDone = 0;
   List.find({
     writer: req.body.writer,
     todos: {
@@ -109,15 +77,26 @@ router.get("/getMonthSuccess", (req, res) => {
     .exec()
     .then((list) => {
       for (i = 0; i < list.length; i++) {
-        total += list[i].todos.length;
         for (j = 0; j < list[i].todos.length; j++) {
-          if (list[i].todos[j].checked === true) done += 1;
+          if (
+            list[i].todos[j].year === req.body.year &&
+            list[i].todos[j].month === req.body.month
+          ) {
+            monthTotal += 1;
+            if (list[i].todos[j].checked === true) monthDone += 1;
+            if (list[i].todos[j].today === req.body.today) {
+              todayTotal += 1;
+              if (list[i].todos[j].checked === true) todayDone += 1;
+            }
+          }
         }
       }
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
-        total,
-        done,
+        todayTotal,
+        todayDone,
+        monthTotal,
+        monthDone,
         //list,
       });
     })

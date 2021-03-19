@@ -25,6 +25,8 @@ app.use("/api/users", require("./routes/users"));
 app.use("/api/users", require("./routes/image"));
 app.use("/api/list", require("./routes/list"));
 
+app.use("/uploads", express.static("uploads"));
+
 app.get("/api/hello", (req, res) => {
   res.send("coded by smwu-web-master");
 });
