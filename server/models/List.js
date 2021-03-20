@@ -18,7 +18,7 @@ const listSchema = mongoose.Schema({
         year: { type: Number, required: true },
         month: { type: Number, required: true },
         today: { type: Number, required: true },
-        private: { type: Boolean, default: true },
+        privated: { type: Boolean, default: true },
         checked: { type: Boolean, default: false },
       },
       { _id: false }
