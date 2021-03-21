@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 function ImageUploader() {
-  const [imageUrl, setImageUrl] = useState(
-    "https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/436/8142f53e51d2ec31bc0fa4bec241a919_crop.jpeg"
-  );
+  const [imageUrl, setImageUrl] = useState("uploads/default.jpeg");
 
   const setFile = (e) => {
     if (e.target.files[0]) {
