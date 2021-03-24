@@ -6,49 +6,40 @@ const { List } = require("../models/List");
 // client에서 post 요청할 때 writer 정보(User)를 함께 보내줘야 함
 router.post("/saveList", (req, res) => {
   const list = new List(req.body);
-  List.deleteOne(
-    { writer: req.body.writer, category: req.body.category },
-    (err, res) => { }
-  );
-  List.findOneAndUpdate(
-    { writer: req.body.writer, category: req.body.category },
-    { $push: { todos: req.body.todos } },
-    (err, info) => {
-      if (!info) {
+  List.findOneAndDelete({
+    writer: req.body.writer,
+    category: req.body.category,
+    "todos.year": req.body.year,
+    "todos.month": req.body.month,
+    "todos.today": req.body.today,
+  })
+    .exec()
+    .then((info) => {
+      // 빈 배열로 남아있지 않게 조건 넣어줌
+      if (req.body.todos.length !== 0) {
         list.save((err, listInfo) => {
           if (err) return res.json({ success: false, err });
         });
         return res.json({ success: true, list });
       }
-      return res.status(200).json({ success: true, list });
-    }
-  );
+    })
+    .catch((err) => {
+      res.status(400).send(err);
+    });
 });
 
 // list를 database에서 불러와 client에게 전달
 router.post("/getList", (req, res) => {
   // client에서 writer, category, date 정보 전달해줘야 함
-  List.findOne(
-    {
-      writer: req.body.writer,
-      category: req.body.category,
-      "todos.year": req.body.year,
-      "todos.month": req.body.month,
-      "todos.today": req.body.today,
-    }
-    //{ "todos.$": 1 }
-  ).exec((err, list) => {
+  List.findOne({
+    writer: req.body.writer,
+    category: req.body.category,
+    "todos.year": req.body.year,
+    "todos.month": req.body.month,
+    "todos.today": req.body.today,
+  }).exec((err, list) => {
     if (err) return res.status(400).send(err);
     if (!list) return res.json({ success: true, list });
-    for (i = list.todos.length - 1; i >= 0; i--) {
-      if (
-        list.todos[i].year !== req.body.year ||
-        list.todos[i].month !== req.body.month ||
-        list.todos[i].today !== req.body.today
-      ) {
-        list.todos.splice(i, 1);
-      }
-    }
     return res.status(200).json({
       success: true,
       listCount: list.todos.length,
@@ -77,16 +68,11 @@ router.post("/getSuccess", (req, res) => {
     .then((list) => {
       for (i = 0; i < list.length; i++) {
         for (j = 0; j < list[i].todos.length; j++) {
-          if (
-            list[i].todos[j].year === req.body.year &&
-            list[i].todos[j].month === req.body.month
-          ) {
-            monthTotal += 1;
-            if (list[i].todos[j].checked === true) monthDone += 1;
-            if (list[i].todos[j].today === req.body.today) {
-              todayTotal += 1;
-              if (list[i].todos[j].checked === true) todayDone += 1;
-            }
+          monthTotal += 1;
+          if (list[i].todos[j].checked === true) monthDone += 1;
+          if (list[i].todos[j].today === req.body.today) {
+            todayTotal += 1;
+            if (list[i].todos[j].checked === true) todayDone += 1;
           }
         }
       }
