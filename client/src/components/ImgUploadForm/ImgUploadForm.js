@@ -25,9 +25,7 @@ function ImageUploader() {
 
   useEffect(() => {
     const currentUserImg = localStorage.getItem("userImg");
-    if (currentUserImg !== null) {
-      setImageUrl(currentUserImg);
-    }
+    setImageUrl(currentUserImg);
   });
 
   return (
