@@ -15,6 +15,7 @@ function ImageUploader() {
         .then((res) => {
           console.log(res);
           setImageUrl(res.data.filePath);
+          window.localStorage.setItem("userImg", res.data.filePath);
         })
         .catch((err) => {
           console.error(err);
@@ -23,8 +24,11 @@ function ImageUploader() {
   };
 
   useEffect(() => {
-    console.log(imageUrl);
-  }, [imageUrl]);
+    const currentUserImg = localStorage.getItem("userImg");
+    if (currentUserImg !== null) {
+      setImageUrl(currentUserImg);
+    }
+  });
 
   return (
     <>

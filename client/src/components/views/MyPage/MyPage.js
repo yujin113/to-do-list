@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./MyPage.css";
 import { withRouter } from "react-router-dom";
 import List from "../../ToDoList/List";
 import ImageUploader from "../../ImgUploadForm/ImgUploadForm";
 import AchievementRate from "../../AchievementRate/AchievementRate";
+
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+import "./Calendar.css";
 //import NavBar from './components/views/NavBar/NavBar';
 
 function MyPage(props) {
@@ -14,12 +18,13 @@ function MyPage(props) {
   const [selectedYear, setselectedYear] = useState(today.getFullYear());
   const [selectedMonth, setselectedMonth] = useState(today.getMonth() + 1);
   const [selectedDate, setselectedDate] = useState(today.getDate());
+  const [value, setvalue] = useState(today);
 
-  function selectedDateHandler() {
-    setselectedYear();
-    setselectedMonth();
-    setselectedDate();
-  }
+  useEffect(() => {
+    setselectedYear(value.getFullYear());
+    setselectedMonth(value.getMonth() + 1);
+    setselectedDate(value.getDate());
+  }, [value]);
 
   return (
     <div className="myPage_container">
@@ -30,7 +35,8 @@ function MyPage(props) {
         <span> {currentUsername}의</span> to do list
       </div>
       <div className="myPage_item">
-        달력 {/*<Calender onChange={selectedDateHandler}/>*/}
+        달력
+        <Calendar onChange={setvalue} value={value} />
       </div>
       <div className="myPage_item">
         <AchievementRate
@@ -40,7 +46,7 @@ function MyPage(props) {
         />
       </div>
       <div className="myPage_item">
-        이달의 목표
+        <div>이달의 목표</div>
         <List
           category="이달의 목표"
           year={selectedYear}
