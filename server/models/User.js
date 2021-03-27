@@ -25,6 +25,19 @@ const userSchema = mongoose.Schema({
     required: true,
     minlength: 5,
   },
+  life: {
+    type: Number,
+    default: 0,
+  },
+  study: {
+    type: Number,
+    default: 0,
+  },
+  hobby: {
+    type: Number,
+    default: 0,
+  },
+  mostList: String,
   image: String,
   token: {
     // 유효성 관리
