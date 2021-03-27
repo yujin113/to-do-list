@@ -29,7 +29,7 @@ function ImageUploader() {
     const currentUserImg = localStorage.getItem('userImg');
     if(currentUserImg !== null){
       setImageUrl(currentUserImg);
-    } 
+    }
   })
 
   return (

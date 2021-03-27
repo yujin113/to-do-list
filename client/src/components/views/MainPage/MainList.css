@@ -1,4 +1,4 @@
-.movies .movie {
+.lists .list {
   background-color: white;
   margin-bottom: 70px;
   font-weight: 300;
@@ -9,7 +9,7 @@
     0 8px 16px -8px rgba(0, 0, 0, 0.3), 0 -6px 16px -6px rgba(0, 0, 0, 0.025);
 }
 
-.movies .movie a {
+.lists .list a {
   display: grid;
   grid-template-columns: minmax(150px, 1fr) 2fr;
   grid-gap: 20px;
@@ -17,7 +17,7 @@
   color: inherit;
 }
 
-.movie img {
+.list img {
   position: relative;
   top: -50px;
   max-width: 150px;
@@ -27,29 +27,19 @@
     0 18px 36px -18px rgba(0, 0, 0, 0.3), 0 -12px 36px -8px rgba(0, 0, 0, 0.025);
 }
 
-.movie .movie__title,
-.movie .movie__year {
+.list .list_user,
+.list .list_category {
   margin: 0;
   font-weight: 300;
 }
 
-.movie .movie__title {
+.list .list_user {
   margin-bottom: 5px;
   font-size: 24px;
   color: #2c2c2c;
 }
 
-.movie .movie__genres {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-wrap: wrap;
-  margin: 5px 0px;
-}
-
-.movie__genres li,
-.movie .movie__year {
+.list .list_category {
   margin-right: 10px;
   font-size: 14px;
 }
