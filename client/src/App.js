@@ -17,7 +17,7 @@ import MainPage from './components/views/MainPage/MainPage';
 import daily from './components/views/MainPage/dailyPage/daily';
 import hobby from './components/views/MainPage/hobbyPage/hobby';
 import study from './components/views/MainPage/studyPage/study';
-
+import OpenPage from './components/views/OpenPage/OpenPage';
 import Auth from './hoc/auth'
 
 function App() {
@@ -41,6 +41,7 @@ function App() {
         <Route exact path="/daily" component={Auth(daily, true)} />
         <Route exact path="/hobby" component={Auth(hobby, true)} />
         <Route exact path="/study" component={Auth(study, true)} />
+        <Route exact path="/open" component={Auth(OpenPage, true)} />
 
       </Switch>
     </div>
