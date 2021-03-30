@@ -40,7 +40,7 @@ const userSchema = mongoose.Schema({
   mostList: String,
   image: {
     type: String,
-    default: "uploads/default.jpeg"
+    default: "uploads/default.jpeg",
   },
   token: {
     // 유효성 관리

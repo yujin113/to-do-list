@@ -26,6 +26,8 @@ app.use("/api/users", require("./routes/image"));
 app.use("/api/list", require("./routes/list"));
 app.use("/api/main", require("./routes/main"));
 app.use("/api/open", require("./routes/open"));
+app.use("/api/comment", require("./routes/comment"));
+app.use("/api/like", require("./routes/like"));
 
 app.use("/uploads", express.static("uploads"));
 

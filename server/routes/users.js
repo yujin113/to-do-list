@@ -68,7 +68,4 @@ router.get("/logout", auth, (req, res) => {
   );
 });
 
-// 목표 저장 route
-router.post("/saveGoal", (req, res) => {});
-
 module.exports = router;

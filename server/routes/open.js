@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { List } = require("../models/List");
 
+// writer, category 정보 받아서 그에 맞는 리스트 보내줌
 router.post("/getList", (req, res) => {
   List.find({
     writer: req.body.writer,
@@ -9,7 +10,6 @@ router.post("/getList", (req, res) => {
     "todos.privated": false,
   }).exec((err, list) => {
     if (err) return res.status(400).send(err);
-    //   if (!list) return res.json({ list });
     for (i = 0; i < list.length; i++) {
       for (j = 0; j < list[i].todos.length; j++) {
         if (list[i].todos[j].privated === true) {
