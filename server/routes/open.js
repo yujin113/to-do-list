@@ -8,6 +8,9 @@ router.post("/getList", (req, res) => {
     writer: req.body.writer,
     category: req.body.category,
     "todos.privated": false,
+    "todos.year": req.body.year,
+    "todos.month": req.body.month,
+    "todos.today": req.body.today,
   }).exec((err, list) => {
     if (err) return res.status(400).send(err);
     for (i = 0; i < list.length; i++) {
